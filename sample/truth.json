@@ -1,0 +1,33 @@
+{
+  "bad_scan_return_ids": [
+    515,
+    516,
+    925
+  ],
+  "dresses_size_guide_fix": {
+    "from_ship_week": 84,
+    "rate_after": 0.29,
+    "rate_before": 0.36
+  },
+  "holiday_lag_stretch": 1.8,
+  "promotion": {
+    "volume_multiplier": 2.0,
+    "weeks": [
+      52,
+      53,
+      54,
+      55
+    ]
+  },
+  "seed": 7,
+  "true_ultimate_rates": {
+    "accessories": 0.06,
+    "denim": 0.24,
+    "dresses": 0.36,
+    "footwear": 0.22,
+    "outerwear": 0.14,
+    "tops": 0.16
+  },
+  "week1_start": "2024-07-01",
+  "weeks": 8
+}
