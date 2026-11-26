@@ -94,7 +94,7 @@ def test_late_returns_are_three_percent_and_none_after_day_90(lags):
     assert lags["lag"].max() <= 90
 
 
-def test_no_return_lands_more_than_twelve_calendar_weeks_after_the_ship_week(dataset, lags):
+def test_the_latest_return_lands_exactly_twelve_calendar_weeks_after_the_ship_week(dataset, lags):
     valid = lags["lag"] >= 0
     dev = dataset.return_day // 7 - lags["ship_day"] // 7
     assert dev[valid].max() == 12

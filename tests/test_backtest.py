@@ -86,24 +86,27 @@ def test_segmented_factors_beat_pooled_factors_in_the_second_holiday_season(back
     assert segmented < pooled
 
 
-def test_mae_by_band_matches_the_table(backtest_con):
+def test_mae_by_band_has_the_three_age_bands_and_naive_error_falls_with_age(backtest_con):
     mae = bt.mae_by_band(backtest_con)
     assert set(b for _, b in mae) == {"0-1", "2-4", "5-8"}
     assert mae[("naive", "0-1")] > mae[("naive", "5-8")]
 
 
-def test_backtest_estimates_never_use_later_data(backtest_con):
-    # Re-derive one estimate by building as of its week and compare with the stored score.
-    con = backtest_con
-    stored = con.execute(
+def test_backtest_estimates_never_use_later_data(backtest_con, make_con):
+    # Re-derive one estimate on a fresh warehouse built as of its week (the shared session
+    # warehouse is left untouched) and compare with the stored score.
+    stored = backtest_con.execute(
         "SELECT estimate FROM backtest_scores WHERE as_of = 60 AND category = 'denim' "
         "AND ship_week = 58 AND method = 'chain_ladder'"
     ).fetchone()[0]
-    wh.build(con, 60)
-    rebuilt = con.execute(
-        "SELECT chain_ladder_rate FROM fct_ultimates WHERE category = 'denim' AND ship_week = 58"
-    ).fetchone()[0]
-    wh.build(con, 104)
+    rebuilt = (
+        make_con(60)
+        .execute(
+            "SELECT chain_ladder_rate FROM fct_ultimates "
+            "WHERE category = 'denim' AND ship_week = 58"
+        )
+        .fetchone()[0]
+    )
     assert stored == rebuilt
 
 
